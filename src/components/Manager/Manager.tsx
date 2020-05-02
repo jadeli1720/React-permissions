@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Manager.module.scss';
 import Button from 'components/Button';
-import { usePermissions, Can } from "permissions";
+import { usePermissions, Can, Switch as PermissionsSwitch } from "permissions";
 
 const Manager = () => {
   const [posts, setPosts] = useState([
@@ -29,11 +29,26 @@ const { permissions } = usePermissions();
             </div>
             {/* TODO: Only render this for users that are allowed to delete posts */}
             <div className={styles.post_buttons}>
-              <Can permissions="user:write">
-                <Button palette="danger" onClick={() => remove(post.id)}>
+              {/*Building out switch because we can, not because this app needs it. */}
+              <PermissionsSwitch>
+                <Can permissions={["user:write"]}>
+                  <Button palette="danger" onClick={() => remove(post.id)}>
+                    Delete
+                  </Button>
+                </Can>
+                <Can>
+                  <Button>
+                    View
+                  </Button>
+                </Can>
+              </PermissionsSwitch>
+              {/* 
+              We abstracted the below code in permissions.tsx  on lines 38 - 57, therefor it is not needed.
+              {permissions.includes('user:write') && (
+                  <Button palette="danger" onClick={() => remove(post.id)}>
                   Delete
-                </Button>
-              </Can>
+                  </Button>
+              )} */}
             </div>
           </li>
         ))}
