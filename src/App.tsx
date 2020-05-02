@@ -8,7 +8,7 @@ function App() {
   return (
     <div className={styles.root}>
       <Switch>{/*This looks through all of it's children and finds the route that matches the requested path and only renders that component. It goes in linear order. */}
-        <Route path="/login" component={Login} />
+        <Route path={["/login", "/sign-up"]} component={Login} />
         {/*below is the root path of the app */}
         <Route >
           <Manager />

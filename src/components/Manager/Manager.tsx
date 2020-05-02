@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Manager.module.scss';
 import Button from 'components/Button';
+import { usePermissions, Can } from "permissions";
 
 const Manager = () => {
   const [posts, setPosts] = useState([
@@ -15,6 +16,8 @@ const Manager = () => {
     setPosts(posts.filter(post => post.id !== id));
   };
 
+const { permissions } = usePermissions();
+
   return (
     <div className={styles.container}>
       <h1>Manager</h1>
@@ -26,9 +29,11 @@ const Manager = () => {
             </div>
             {/* TODO: Only render this for users that are allowed to delete posts */}
             <div className={styles.post_buttons}>
-              <Button palette="danger" onClick={() => remove(post.id)}>
-                Delete
-              </Button>
+              <Can permissions="user:write">
+                <Button palette="danger" onClick={() => remove(post.id)}>
+                  Delete
+                </Button>
+              </Can>
             </div>
           </li>
         ))}
